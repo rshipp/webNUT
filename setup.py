@@ -11,6 +11,7 @@ requires = [
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'waitress',
+    'nut2',
     ]
 
 setup(name='webNUT',
