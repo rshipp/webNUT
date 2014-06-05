@@ -15,7 +15,10 @@ class WebNUT(object):
                 ups_dict = client.list_ups()
                 ups_list = dict()
                 for ups in ups_dict:
-                    ups_vars = client.list_vars(ups)
+                    try:
+                        ups_vars = client.list_vars(ups)
+                    except nut2.PyNUTError:
+                        continue
 
                     ups_list[ups] = {
                         'description': client.description(ups),
