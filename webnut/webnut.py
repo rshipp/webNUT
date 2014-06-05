@@ -18,7 +18,6 @@ class WebNUT(object):
                     ups_vars = client.list_vars(ups)
 
                     ups_list[ups] = {
-                        'name': ups_dict[ups],
                         'description': client.description(ups),
                         'status': self._get_ups_status(ups_vars),
                         'battery': ups_vars['battery.charge'],
@@ -64,7 +63,6 @@ class WebNUT(object):
                 return '<i class="fa fa-%s" style="color: %s" title="%s"></i>' % (
                         self.icon, self.color, self.title)
 
-        print status
         if status.startswith('OL'):
             status = Status('check', 'green', 'Online')
         elif status.startswith('OB'):

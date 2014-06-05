@@ -13,7 +13,7 @@
                 <tbody>
                     <tr tal:repeat="ups ups_list">
                         <td>
-                            <a href="${ups}">${ups_list[ups]['name']}</a>
+                            <a href="${ups}">${ups}</a>
                         </td>
                         <td>${ups_list[ups]['description']}</td>
                         <td>${ups_list[ups]['status']}</td>
