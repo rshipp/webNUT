@@ -22,7 +22,7 @@ status, and battery charge:
 
 ![Index](screenshots/ups_index.png "Index")
 
-Clicking on a UPS's name takes you to a details view the shows a quick
+Clicking on a UPS's name takes you to a details view that shows a quick
 status indicator, as well as the values of all variables set on the
 device:
 
