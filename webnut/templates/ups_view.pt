@@ -1,0 +1,34 @@
+<div metal:use-macro="view.layout">
+    <div metal:fill-slot="content">
+            <br>
+            <h3>UPS Variables</h3>
+            <table class="table table-striped table-hover" id="var_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr tal:repeat="var ups_vars">
+                        <td>${var}</td>
+                        <td>${ups_vars[var]}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>
+            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+            <script type="text/javascript">
+                $(function(){
+                    $("#var_table").dataTable(); /*{
+                        "bPaginate": true,
+                        "sPaginationType": "full_numbers",
+                        "bFilter": true,
+                        "bAutoWidth": false,
+                        "bInfo": false,
+                    }).fadeIn();*/
+                });
+            </script>
+    </div>
+</div>

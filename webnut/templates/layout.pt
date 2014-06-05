@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 STRICT//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:define-macro="layout">
+<head>
+    <title>${title} - webNUT</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css"/>
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="main">
+    <div class="col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+        <div class="row">
+            <h2><i class="fa fa-power-off"></i> ${title}</h2>
+            <div metal:define-slot="content">
+            </div>
+        </div>
+        <div class="row">
+            <br><br><br>
+        </div>
+    </div>
+</div>
+</body>
+</html>

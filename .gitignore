@@ -1,0 +1,5 @@
+*.py[cdo]
+*.egg-info*
+build/
+dist/
+config.py
