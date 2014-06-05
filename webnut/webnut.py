@@ -66,5 +66,5 @@ class WebNUT(object):
         if status.startswith('OL'):
             status = Status('check', 'green', 'Online')
         elif status.startswith('OB'):
-            status = Status('warning', 'orange', 'Discharging')
+            status = Status('warning', 'orange', 'On Battery')
         return status
