@@ -1,7 +1,4 @@
-import re
-import exceptions
-
-from pyramid.httpexceptions import HTTPFound
+from pyramid.exceptions import NotFound
 from pyramid.renderers import get_renderer
 from pyramid.view import view_config
 
@@ -27,6 +24,11 @@ class NUTViews(object):
         try:
             ups_name = self.webnut.get_ups_name(ups)
             ups_vars = self.webnut.get_ups_vars(ups)
-            return dict(title=ups_name, ups_vars=ups_vars)
+            return dict(title=ups_name, ups_vars=ups_vars[0],
+                    ups_status=ups_vars[1])
         except KeyError:
-            return dict(title="No such UPS", ups_vars=[])
+            raise NotFound
+
+def notfound(request):
+    request.response.status = 404
+    return dict(title='No Such UPS')

@@ -1,0 +1,7 @@
+<div metal:use-macro="view.layout">
+    <div metal:fill-slot="content">
+            <br>
+            <h3>404 Not Found</h3>
+            Sorry, no UPS with that name exists.
+    </div>
+</div>

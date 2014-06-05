@@ -16,16 +16,11 @@ class WebNUT(object):
                 ups_list = dict()
                 for ups in ups_dict:
                     ups_vars = client.list_vars(ups)
-                    status = ups_vars['ups.status']
-                    if status == 'OL':
-                        status = 'Online'
-                    elif status == 'OB':
-                        status = 'Discharging'
 
                     ups_list[ups] = {
                         'name': ups_dict[ups],
                         'description': client.description(ups),
-                        'status': status,
+                        'status': self._get_ups_status(ups_vars),
                         'battery': ups_vars['battery.charge'],
                     }
                 return ups_list
@@ -44,6 +39,34 @@ class WebNUT(object):
         try:
             with nut2.PyNUTClient(host=self.server, port=self.port,
                     login=self.username, password=self.password) as client:
-                return client.list_vars(ups.encode('utf-8'))
+                ups_vars = client.list_vars(ups.encode('utf-8'))
+                for var in ups_vars:
+                    ups_vars[var] = (ups_vars[var],
+                            client.var_description(ups.encode('utf-8'), var.encode('utf-8')))
+                return (ups_vars, self._get_ups_status(ups_vars))
         except nut2.PyNUTError:
-            return dict()
+            return (dict(), str())
+
+
+    def _get_ups_status(self, ups_vars):
+        status = ups_vars['ups.status']
+        if type(status) == tuple:
+            status = status[0]
+
+        class Status(object):
+            # Allows Chameleon to print unescaped HTML.
+            def __init__(self, icon, color, title):
+                self.icon = icon
+                self.color = color
+                self.title = title
+
+            def __html__(self):
+                return '<i class="fa fa-%s" style="color: %s" title="%s"></i>' % (
+                        self.icon, self.color, self.title)
+
+        print status
+        if status.startswith('OL'):
+            status = Status('check', 'green', 'Online')
+        elif status.startswith('OB'):
+            status = Status('warning', 'orange', 'Discharging')
+        return status
