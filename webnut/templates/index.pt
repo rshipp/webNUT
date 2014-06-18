@@ -13,7 +13,7 @@
                 <tbody>
                     <tr tal:repeat="ups ups_list">
                         <td>
-                            <a href="${ups}">${ups}</a>
+                            <a href="${request.route_url('ups_view', ups=ups)}">${ups}</a>
                         </td>
                         <td>${ups_list[ups]['description']}</td>
                         <td>${ups_list[ups]['status']}</td>
@@ -26,13 +26,7 @@
             <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
             <script type="text/javascript">
                 $(function(){
-                    $("#ups_table").dataTable(); /*{
-                        "bPaginate": true,
-                        "sPaginationType": "full_numbers",
-                        "bFilter": true,
-                        "bAutoWidth": false,
-                        "bInfo": false,
-                    }).fadeIn();*/
+                    $("#ups_table").dataTable();
                 });
             </script>
     </div>

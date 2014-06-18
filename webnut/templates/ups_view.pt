@@ -26,13 +26,7 @@
             <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
             <script type="text/javascript">
                 $(function(){
-                    $("#var_table").dataTable(); /*{
-                        "bPaginate": true,
-                        "sPaginationType": "full_numbers",
-                        "bFilter": true,
-                        "bAutoWidth": false,
-                        "bInfo": false,
-                    }).fadeIn();*/
+                    $("#var_table").dataTable();
                 });
             </script>
     </div>
