@@ -2,8 +2,8 @@ from pyramid.exceptions import NotFound
 from pyramid.renderers import get_renderer
 from pyramid.view import view_config
 
-from webnut import WebNUT
-import config
+from .webnut import WebNUT
+from . import config
 
 class NUTViews(object):
     def __init__(self, request):
