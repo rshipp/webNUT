@@ -33,7 +33,7 @@ class WebNUT(object):
         try:
             with nut2.PyNUTClient(host=self.server, port=self.port,
                     login=self.username, password=self.password) as client:
-                return client.list_ups()[ups.encode('utf-8')]
+                return client.list_ups()[ups]
         except nut2.PyNUTError:
             return dict()
 
@@ -41,10 +41,10 @@ class WebNUT(object):
         try:
             with nut2.PyNUTClient(host=self.server, port=self.port,
                     login=self.username, password=self.password) as client:
-                ups_vars = client.list_vars(ups.encode('utf-8'))
+                ups_vars = client.list_vars(ups)
                 for var in ups_vars:
                     ups_vars[var] = (ups_vars[var],
-                            client.var_description(ups.encode('utf-8'), var.encode('utf-8')))
+                            client.var_description(ups, var))
                 return (ups_vars, self._get_ups_status(ups_vars))
         except nut2.PyNUTError:
             return (dict(), str())
