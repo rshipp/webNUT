@@ -15,7 +15,7 @@ requires = [
     ]
 
 setup(name='webNUT',
-      version='0.0',
+      version='0.0.1',
       description='webNUT',
       long_description=README,
       classifiers=[
@@ -25,16 +25,14 @@ setup(name='webNUT',
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         "Topic :: System :: Power (UPS)",
         ],
-      author='george2',
-      author_email='rpubaddr0@gmail.com',
-      url='https://github.com/george2/webNUT',
+      author='rshipp',
+      author_email='python@rshipp.com',
+      url='https://github.com/rshipp/webNUT',
       keywords='web pyramid pylons nut network ups tools',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
-      tests_require=requires,
-      test_suite="webnut",
       entry_points="""\
       [paste.app_factory]
       main = webnut:main
