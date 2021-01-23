@@ -3,6 +3,8 @@ from pyramid.renderers import get_renderer
 from pyramid.view import view_config
 
 from .webnut import WebNUT
+from .webnut import NUTServer
+
 from . import config
 
 class NUTViews(object):
@@ -10,8 +12,14 @@ class NUTViews(object):
         self.request = request
         renderer = get_renderer("templates/layout.pt")
         self.layout = renderer.implementation().macros['layout']
-        self.webnut = WebNUT(config.server, config.port,
-                config.username, config.password)
+        # Backward compatible support for single server configuration
+        servers = []
+        if hasattr(config, 'servers'):
+            servers = config.servers
+        if hasattr(config, 'server') and hasattr(config, 'port') and 
+                hasattr(config, 'username') and hasattr(config, 'password'):
+            servers.append(NUTServer(config.server, config.port, config.username, config.password))
+        self.webnut = WebNUT(servers)
 
     @view_config(route_name='home', renderer='templates/index.pt')
     def home(self):

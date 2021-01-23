@@ -5,6 +5,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Server</th>
                         <th>Description</th>
                         <th>Status</th>
                         <th>Battery</th>
@@ -13,8 +14,9 @@
                 <tbody>
                     <tr tal:repeat="ups ups_list">
                         <td>
-                            <a href="${request.route_url('ups_view', ups=ups)}">${ups}</a>
+                            <a href="${request.route_url('ups_view', ups=ups)}">${ups_list[ups]['name']}</a>
                         </td>
+                        <td>${ups_list[ups]['server']}</td>
                         <td>${ups_list[ups]['description']}</td>
                         <td>${ups_list[ups]['status']}</td>
                         <td>${ups_list[ups]['battery']}%</td>

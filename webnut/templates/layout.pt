@@ -16,7 +16,7 @@
 <div id="main">
     <div class="col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
         <div class="row">
-            <h2><i class="fa fa-power-off"></i> ${title}</h2>
+            <h2><a href="/" title="Home"><i class="fa fa-power-off"></i></a> ${title}</h2>
             <div metal:define-slot="content">
             </div>
         </div>
