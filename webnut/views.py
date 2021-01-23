@@ -16,8 +16,8 @@ class NUTViews(object):
         servers = []
         if hasattr(config, 'servers'):
             servers = config.servers
-        if hasattr(config, 'server') and hasattr(config, 'port') and 
-                hasattr(config, 'username') and hasattr(config, 'password'):
+        if (hasattr(config, 'server') and hasattr(config, 'port') and 
+                hasattr(config, 'username') and hasattr(config, 'password')):
             servers.append(NUTServer(config.server, config.port, config.username, config.password))
         self.webnut = WebNUT(servers)
 
