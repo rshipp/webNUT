@@ -13,6 +13,6 @@ password = None
 from .webnut import NUTServer
 
 servers = [
-  NUTServer('192.168.1.3', 3493, None, None),
-  NUTServer('192.168.1.6', 3493, None, None)
+    NUTServer('192.168.1.3', 3493, None, None),
+    NUTServer('192.168.1.6', 3493, None, None)
 ]
