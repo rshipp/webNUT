@@ -41,24 +41,28 @@ class WebNUT(object):
 
     def get_ups_name(self, ups):
         try:
-            (name, host) = ups.split('@')
-            server = self.servers[host]
+            id = ups.split('@')
+            if len(id) != 2:
+                return dict()
+            server = self.servers[id[1]]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
-                return client.list_ups()[name]
+                return client.list_ups()[id[0]]
         except nut2.PyNUTError:
             return dict()
 
     def get_ups_vars(self, ups):
         try:
-            (name, host) = ups.split('@')
-            server = self.servers[host]
+            id = ups.split('@')
+            if len(id) != 2:
+                return (dict(), str())
+            server = self.servers[id[1]]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
-                ups_vars = client.list_vars(name)
+                ups_vars = client.list_vars(id[0])
                 for var in ups_vars:
                     ups_vars[var] = (ups_vars[var],
-                                     client.var_description(name, var))
+                                     client.var_description(id[0], var))
                 return (ups_vars, self._get_ups_status(ups_vars))
         except nut2.PyNUTError:
             return (dict(), str())

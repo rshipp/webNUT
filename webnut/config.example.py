@@ -1,7 +1,7 @@
 # User-defined configuration.
 # Rename this to config.py.
 
-# Single server configuration, backards compatible:
+# Single server configuration, backwards compatible:
 
 server = '127.0.0.1'
 port = 3493
