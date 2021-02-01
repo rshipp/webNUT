@@ -17,7 +17,7 @@ your production-ready server of choice.
 
 ## Screenshots
 
-The index lists available UPS devices, along with their description,
+The index lists available UPS devices on each server, along with their description,
 status, and battery charge:
 
 ![Index](screenshots/ups_index.png "Index")
@@ -27,3 +27,5 @@ status indicator, as well as the values of all variables set on the
 device:
 
 ![UPS View](screenshots/ups_view.png "UPS View")
+
+Clicking on the power icon will return to the index page.
