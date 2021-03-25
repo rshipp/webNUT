@@ -28,12 +28,13 @@ class WebNUT(object):
                         except nut2.PyNUTError:
                             continue
 
+                        charge = int(ups_vars.get('battery.charge', 0))
                         ups_list[ups+'@'+v.host] = {
                             'name': ups,
                             'server': k,
                             'description': client.description(ups),
                             'status': self._get_ups_status(ups_vars),
-                            'battery': ups_vars.get('battery.charge', '--')
+                            'battery': self._get_battery_status(charge)
                         }
             return ups_list
         except nut2.PyNUTError:
@@ -84,9 +85,36 @@ class WebNUT(object):
                     self.icon, self.color, self.title)
 
         if status.startswith('OL'):
-            status = Status('check', 'green', 'Online')
+            return Status('check', 'green', 'Online')
         elif status.startswith('OB'):
-            status = Status('warning', 'orange', 'On Battery')
+            return Status('warning', 'orange', 'On Battery')
         elif status.startswith('LB'):
-            status = Status('warning', 'red', 'Low Battery')
-        return status
+            return Status('warning', 'red', 'Low Battery')
+        return Status('unknown', 'black', 'Unknown')
+
+    def _get_battery_status(self, charge):
+
+        class Status(object):
+            def __init__(self, charge, color):
+                self.charge = charge
+                self.color = color
+
+            def __html__(self):
+                height = 20
+                return '''
+                <div class="progress" style="height:{0}px;background-color:silver">
+                    <div class="progress-bar {1}" 
+                        style="width:{2}%;color:black" 
+                        role="progressbar" 
+                        aria-valuenow="{2}" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100">{2}%</div>
+                </div>
+                '''.format(height, self.color, self.charge)
+
+        if charge > 90:
+            return Status(charge, 'bg-success')
+        elif charge > 60:
+            return Status(charge, 'bg-warning')
+        else:
+            return Status(charge, 'bg-danger')
