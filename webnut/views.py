@@ -35,7 +35,8 @@ class NUTViews(object):
             ups_name = self.webnut.get_ups_name(ups)
             ups_vars = self.webnut.get_ups_vars(ups)
             return dict(title=ups_name, ups_vars=ups_vars[0],
-                        ups_status=ups_vars[1])
+                        ups_status=ups_vars[1],
+                        ups_battery=ups_vars[0].get('battery.charge', '--')[0])
         except KeyError:
             raise NotFound
 

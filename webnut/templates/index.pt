@@ -9,17 +9,19 @@
                         <th>Description</th>
                         <th>Status</th>
                         <th>Battery</th>
+                        <th>Runtime</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr tal:repeat="ups ups_list">
                         <td>
-                            <a title="UPS Detail" href="${request.route_url('ups_view', ups=ups)}">${ups_list[ups]['name']}</a>
+                            <a title="${ups_list[ups]['name']} detail" href="${request.route_url('ups_view', ups=ups)}">${ups_list[ups]['name']}</a>
                         </td>
                         <td>${ups_list[ups]['server']}</td>
                         <td>${ups_list[ups]['description']}</td>
                         <td>${ups_list[ups]['status']}</td>
                         <td>${ups_list[ups]['battery']}</td>
+                        <td>${ups_list[ups]['runtime']}</td>
                     </tr>
                 </tbody>
             </table>

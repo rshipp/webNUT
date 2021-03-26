@@ -1,4 +1,5 @@
 import nut2
+import datetime
 
 
 class NUTServer(object):
@@ -29,12 +30,15 @@ class WebNUT(object):
                             continue
 
                         charge = int(ups_vars.get('battery.charge', 0))
+                        runtime = str(datetime.timedelta(
+                            seconds=int(ups_vars.get('battery.runtime', 0))))
                         ups_list[ups+'@'+v.host] = {
                             'name': ups,
                             'server': k,
                             'description': client.description(ups),
                             'status': self._get_ups_status(ups_vars),
-                            'battery': self._get_battery_status(charge)
+                            'battery': self._get_battery_status(charge),
+                            'runtime': runtime,
                         }
             return ups_list
         except nut2.PyNUTError:
@@ -102,13 +106,14 @@ class WebNUT(object):
             def __html__(self):
                 height = 20
                 return '''
-                <div class="progress" style="height:{0}px;background-color:silver">
-                    <div class="progress-bar {1}" 
-                        style="width:{2}%;color:black" 
-                        role="progressbar" 
-                        aria-valuenow="{2}" 
-                        aria-valuemin="0" 
-                        aria-valuemax="100">{2}%</div>
+                <div class="progress position-relative" style="height:{0}px;background-color:silver;line-height:{0}px;">
+                    <div class="progress-bar {1}"
+                        style="width:{2}%;color:black"
+                        role="progressbar";
+                        aria-valuenow="{2}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                    <span title="{2}%" class="justify-content-center align-middle d-flex position-absolute w-100">{2}%</span>
                 </div>
                 '''.format(height, self.color, self.charge)
 

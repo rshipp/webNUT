@@ -2,7 +2,7 @@
     <div metal:fill-slot="content">
             <strong>Status</strong>: ${ups_status}
             <br>
-            <strong>Battery charge</strong>: ${ups_vars.get('battery.charge', '--')[0]}%
+            <strong>Battery charge</strong>: ${ups_battery}%
             <br>
             <h3>UPS Variables</h3>
             <table class="table table-striped table-hover" id="var_table">
