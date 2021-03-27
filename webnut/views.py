@@ -1,6 +1,9 @@
+import os
+
 from pyramid.exceptions import NotFound
 from pyramid.renderers import get_renderer
 from pyramid.view import view_config
+from pyramid.response import FileResponse
 
 from .webnut import WebNUT
 from .webnut import NUTServer
@@ -22,6 +25,12 @@ class NUTViews(object):
             servers.append(NUTServer(config.server, config.port,
                                      config.username, config.password))
         self.webnut = WebNUT(servers)
+
+    @view_config(route_name="favicon")
+    def favicon_view(self):
+        here = os.path.dirname(__file__)
+        icon = os.path.join(here, "static", "favicon.ico")
+        return FileResponse(icon, request=self.request)
 
     @view_config(route_name='home', renderer='templates/index.pt')
     def home(self):
