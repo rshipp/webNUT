@@ -1,6 +1,5 @@
 <div metal:use-macro="view.layout">
     <div metal:fill-slot="content">
-            <br>
             <table class="table table-striped table-hover" id="ups_table">
                 <thead>
                     <tr>

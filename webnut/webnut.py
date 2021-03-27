@@ -17,6 +17,7 @@ class WebNUT(object):
             self.servers[s.host] = s
 
     def get_ups_list(self):
+        """Return a dict containing a dict of properties for each UPS."""
         try:
             ups_list = dict()
             for k, v in self.servers.items():
@@ -29,15 +30,14 @@ class WebNUT(object):
                         except nut2.PyNUTError:
                             continue
 
-                        charge = int(ups_vars.get('battery.charge', 0))
                         runtime = str(datetime.timedelta(
                             seconds=int(ups_vars.get('battery.runtime', 0))))
                         ups_list[ups+'@'+v.host] = {
                             'name': ups,
                             'server': k,
                             'description': client.description(ups),
-                            'status': self._get_ups_status(ups_vars),
-                            'battery': self._get_battery_status(charge),
+                            'status': ups_vars.get('ups.status', 'Unknown'),
+                            'battery': int(ups_vars.get('battery.charge', 0)),
                             'runtime': runtime,
                         }
             return ups_list
@@ -45,81 +45,32 @@ class WebNUT(object):
             return dict()
 
     def get_ups_name(self, ups):
+        """Return the name of a UPS."""
         try:
             id = ups.split('@')
             if len(id) != 2:
-                return dict()
+                return ''
             server = self.servers[id[1]]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
                 return client.list_ups()[id[0]]
         except nut2.PyNUTError:
-            return dict()
+            return ''
 
     def get_ups_vars(self, ups):
+        """Returns a dict containing a(value, description) tuple for each UPS variable."""
         try:
             id = ups.split('@')
             if len(id) != 2:
-                return (dict(), str())
+                return dict()
+            ups_name = id[0]
             server = self.servers[id[1]]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
-                ups_vars = client.list_vars(id[0])
+                ups_vars = client.list_vars(ups_name)
                 for var in ups_vars:
                     ups_vars[var] = (ups_vars[var],
-                                     client.var_description(id[0], var))
-                return (ups_vars, self._get_ups_status(ups_vars))
+                                     client.var_description(ups_name, var))
+                return ups_vars
         except nut2.PyNUTError:
-            return (dict(), str())
-
-    def _get_ups_status(self, ups_vars):
-        status = ups_vars.get('ups.status', 'unknown')
-        if type(status) == tuple:
-            status = status[0]
-
-        class Status(object):
-            # Allows Chameleon to print unescaped HTML.
-            def __init__(self, icon, color, title):
-                self.icon = icon
-                self.color = color
-                self.title = title
-
-            def __html__(self):
-                return '<i class="fa fa-%s" style="color: %s" title="%s"></i>' % (
-                    self.icon, self.color, self.title)
-
-        if status.startswith('OL'):
-            return Status('check', 'green', 'Online')
-        elif status.startswith('OB'):
-            return Status('warning', 'orange', 'On Battery')
-        elif status.startswith('LB'):
-            return Status('warning', 'red', 'Low Battery')
-        return Status('unknown', 'black', 'Unknown')
-
-    def _get_battery_status(self, charge):
-
-        class Status(object):
-            def __init__(self, charge, color):
-                self.charge = charge
-                self.color = color
-
-            def __html__(self):
-                height = 20
-                return '''
-                <div class="progress position-relative" style="height:{0}px;background-color:silver;line-height:{0}px;">
-                    <div class="progress-bar {1}"
-                        style="width:{2}%;color:black"
-                        role="progressbar";
-                        aria-valuenow="{2}"
-                        aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                    <span title="{2}%" class="justify-content-center align-middle d-flex position-absolute w-100">{2}%</span>
-                </div>
-                '''.format(height, self.color, self.charge)
-
-        if charge > 90:
-            return Status(charge, 'bg-success')
-        elif charge > 60:
-            return Status(charge, 'bg-warning')
-        else:
-            return Status(charge, 'bg-danger')
+            return dict()

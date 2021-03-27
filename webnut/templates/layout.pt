@@ -19,9 +19,9 @@
 <div id="main">
     <div class="col-sm-8 offset-sm-2 col-xs-12 offset-xs-0 mt-3 mb-5">
         <div class="row">
-            <h2><a href="/" title="Home"><i class="fa fa-power-off"></i></a> ${title}</h2>
+            <h2><a href="/" title="Device list"><i class="fa fa-power-off"></i></a>&nbsp;${title}</h2>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div metal:define-slot="content">
             </div>
         </div>
