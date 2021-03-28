@@ -49,15 +49,17 @@ class NUTViews(object):
             ups_vars = self.webnut.get_ups_vars(ups)
             ups_status = ups_vars.get('ups.status', ('Unknown', ''))[0]
             ups_battery = int(ups_vars.get('battery.charge', (0, ''))[0])
+            # Update vars with custom HTML rendering.
             for (k, v) in ups_vars.items():
-                ups_vars[k] = (v[0], v[1], self._ups_(v[2]))
-            return dict(title=ups_name, ups_vars=ups_vars,
+                ups_vars[k] = (v[0], v[1], self._ups_var_writable(v[2]))
+            return dict(title=ups_name,
+                        ups_vars=ups_vars,
                         ups_status=self._ups_status(ups_status),
                         ups_battery=self._ups_battery(ups_battery))
         except KeyError:
             raise NotFound
 
-    def _ups_(self, writable: bool):
+    def _ups_var_writable(self, writable: bool):
 
         class ReadWrite(object):
             # Allows Chameleon to print unescaped HTML.
@@ -65,11 +67,13 @@ class NUTViews(object):
                 self.writable = writable
 
             def __html__(self):
-                return '<i class="fas fa-pen-square fa-lg text-success" title="Writable"></i>' if self.writable else ''
+                if not writable:
+                    return ''
+                return '''<i class="fas fa-pen-square fa-lg text-success" title="Writable"></i>'''
 
         return ReadWrite(writable)
 
-    def _ups_status(self, status):
+    def _ups_status(self, status: str):
 
         class Status(object):
             # Allows Chameleon to print unescaped HTML.
@@ -79,8 +83,9 @@ class NUTViews(object):
                 self.title = title
 
             def __html__(self):
-                return '<i class="fa fa-{0}" style="color:{1}" title="{2}"></i>'.format(
-                    self.icon, self.color, self.title)
+                return '''
+                <i class="fa fa-{0}" style="color:{1}" title="{2}"></i>
+                '''.format(self.icon, self.color, self.title)
 
         if status.startswith('OL'):
             return Status('check', 'green', 'Online')
@@ -90,7 +95,7 @@ class NUTViews(object):
             return Status('warning', 'red', 'Low Battery')
         return Status('unknown', 'black', 'Unknown')
 
-    def _ups_battery(self, charge):
+    def _ups_battery(self, charge: int):
 
         class Status(object):
             # Allows Chameleon to print unescaped HTML.

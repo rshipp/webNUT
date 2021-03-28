@@ -44,27 +44,26 @@ class WebNUT(object):
         except nut2.PyNUTError:
             return dict()
 
-    def get_ups_name(self, ups):
+    def get_ups_name(self, ups: str):
         """Return the name of a UPS."""
         try:
-            id = ups.split('@')
-            if len(id) != 2:
+            (ups_name, ups_server) = self._get_ups(ups)
+            if not ups_name:
                 return ''
-            server = self.servers[id[1]]
+            server = self.servers[ups_server]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
-                return client.list_ups()[id[0]]
+                return client.list_ups()[ups_name]
         except nut2.PyNUTError:
             return ''
 
-    def get_ups_vars(self, ups):
-        """Returns a dict containing a(value, description) tuple for each UPS variable."""
+    def get_ups_vars(self, ups: str):
+        """Returns a dict containing a (value, description) tuple for each UPS variable."""
+        (ups_name, ups_server) = self._get_ups(ups)
+        if not ups_name:
+            return dict()
+        server = self.servers[ups_server]
         try:
-            id = ups.split('@')
-            if len(id) != 2:
-                return dict()
-            ups_name = id[0]
-            server = self.servers[id[1]]
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
                 ups_vars = client.list_vars(ups_name)
@@ -75,3 +74,9 @@ class WebNUT(object):
                 return ups_vars
         except nut2.PyNUTError:
             return dict()
+
+    def _get_ups(self, ups: str):
+        id = ups.split('@')
+        if len(id) != 2:
+            return (None, None)
+        return (id[0], id[1])
