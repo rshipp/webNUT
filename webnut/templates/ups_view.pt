@@ -17,6 +17,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Value</th>
+                        <th>Writable</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +25,7 @@
                         <td>${var}</td>
                         <td>${ups_vars[var][1]}</td>
                         <td>${ups_vars[var][0]}</td>
+                        <td class="text-center">${ups_vars[var][2]}</td>
                     </tr>
                 </tbody>
             </table>

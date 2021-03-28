@@ -49,13 +49,28 @@ class NUTViews(object):
             ups_vars = self.webnut.get_ups_vars(ups)
             ups_status = ups_vars.get('ups.status', ('Unknown', ''))[0]
             ups_battery = int(ups_vars.get('battery.charge', (0, ''))[0])
+            for (k, v) in ups_vars.items():
+                ups_vars[k] = (v[0], v[1], self._ups_(v[2]))
             return dict(title=ups_name, ups_vars=ups_vars,
                         ups_status=self._ups_status(ups_status),
                         ups_battery=self._ups_battery(ups_battery))
         except KeyError:
             raise NotFound
 
+    def _ups_(self, writable: bool):
+
+        class ReadWrite(object):
+            # Allows Chameleon to print unescaped HTML.
+            def __init__(self, writable: bool):
+                self.writable = writable
+
+            def __html__(self):
+                return '<i class="fas fa-pen-square fa-lg text-success" title="Writable"></i>' if self.writable else ''
+
+        return ReadWrite(writable)
+
     def _ups_status(self, status):
+
         class Status(object):
             # Allows Chameleon to print unescaped HTML.
             def __init__(self, icon, color, title):

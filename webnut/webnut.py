@@ -68,9 +68,10 @@ class WebNUT(object):
             with nut2.PyNUTClient(host=server.host, port=server.port,
                                   login=server.username, password=server.password) as client:
                 ups_vars = client.list_vars(ups_name)
+                ups_rw_vars = client.list_rw_vars(ups_name)
                 for var in ups_vars:
                     ups_vars[var] = (ups_vars[var],
-                                     client.var_description(ups_name, var))
+                                     client.var_description(ups_name, var), var in ups_rw_vars)
                 return ups_vars
         except nut2.PyNUTError:
             return dict()
