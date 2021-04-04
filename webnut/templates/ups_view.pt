@@ -1,9 +1,15 @@
 <div metal:use-macro="view.layout">
     <div metal:fill-slot="content">
-            <strong>Status</strong>: ${ups_status}
-            <br>
-            <strong>Battery charge</strong>: ${ups_vars['battery.charge'][0]}%
-            <br>
+            <div class="col-sm-8 col-xs-8 pl-0 mb-2">
+                <div class="row">
+                    <div class="col-4"><strong>Status</strong>:</div>
+                    <div class="col-2">${ups_status}</div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><strong>Battery charge</strong>:</div>
+                    <div class="col-2">${ups_battery}</div>
+                </div>
+            </div>
             <h3>UPS Variables</h3>
             <table class="table table-striped table-hover" id="var_table">
                 <thead>
@@ -11,6 +17,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Value</th>
+                        <th>Writable</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,12 +25,17 @@
                         <td>${var}</td>
                         <td>${ups_vars[var][1]}</td>
                         <td>${ups_vars[var][0]}</td>
+                        <td class="text-center">${ups_vars[var][2]}</td>
                     </tr>
                 </tbody>
             </table>
 
-            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>
-            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css"/>
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"/>
+            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
             <script type="text/javascript">
                 $(function(){
                     $("#var_table").dataTable();
