@@ -1,7 +1,8 @@
 import nut2
 import datetime
 
-
+# Some NUT variables don't have descriptions. This adds additional
+# descriptions for variables that return "Description unavailable".
 DEFAULT_DESCRIPTIONS = {
     "device.mfr": "Device manufacturer",
     "device.model": "Device model",
@@ -11,7 +12,8 @@ DEFAULT_DESCRIPTIONS = {
     "driver.parameter.pollfreq": "Polling frequency",
     # "driver.parameter.pollinterval": "",
     # "driver.parameter.port": "",
-    # "driver.parameter.synchronous": ""
+    # "driver.parameter.synchronous": "",
+    "driver.version.data": "Driver version - Additional data",
 }
 
 
