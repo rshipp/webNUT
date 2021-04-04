@@ -2,6 +2,19 @@ import nut2
 import datetime
 
 
+DEFAULT_DESCRIPTIONS = {
+    "device.mfr": "Device manufacturer",
+    "device.model": "Device model",
+    "device.serial": "Device serial number",
+    "device.type": "Device type",
+    # "driver.parameter.mode": "",
+    "driver.parameter.pollfreq": "Polling frequency",
+    # "driver.parameter.pollinterval": "",
+    # "driver.parameter.port": "",
+    # "driver.parameter.synchronous": ""
+}
+
+
 class NUTServer(object):
     def __init__(self, host='127.0.0.1', port=3493, username=None, password=None):
         self.host = host
@@ -69,8 +82,10 @@ class WebNUT(object):
                 ups_vars = client.list_vars(ups_name)
                 ups_rw_vars = client.list_rw_vars(ups_name)
                 for var in ups_vars:
-                    ups_vars[var] = (ups_vars[var],
-                                     client.var_description(ups_name, var), var in ups_rw_vars)
+                    desc = client.var_description(ups_name, var)
+                    if desc == "Description unavailable" and var in DEFAULT_DESCRIPTIONS:
+                        desc = DEFAULT_DESCRIPTIONS[var]
+                    ups_vars[var] = (ups_vars[var], desc, var in ups_rw_vars)
                 return ups_vars
         except nut2.PyNUTError:
             return dict()
